@@ -1,0 +1,39 @@
+﻿
+@model IEnumerable<NoorEl7abeebCompanyWebApp.Models.MyModels.CustomerPaymentsReportVM>
+<table id="customers" class="table table-bordered table-striped">
+    <thead>
+        <tr style="text-align: right">
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaidForHim)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RestPaymentsForHim)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPayments)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerName)
+                </td>
+                <td class="bg-success">
+                    @Html.DisplayFor(modelItem => item.PaidForHim)
+                </td>
+                <td class="bg-danger">
+                    @Html.DisplayFor(modelItem => item.RestPaymentsForHim)
+                </td>
+                <td class="bg-primary">
+                    @Html.DisplayFor(modelItem => item.TotalPayments)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

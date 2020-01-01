@@ -1,0 +1,29 @@
+﻿
+@model IEnumerable<NoorEl7abeebCompanyWebApp.Models.MyModels.RestBoxes>
+<table id="customers" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Count)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.Name)
+                </td>
+                <td class="bg-info">
+                    @Html.DisplayFor(modelItem => item.Count)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

@@ -1,0 +1,114 @@
+﻿@model NoorEl7abeebCompanyWebApp.Models.MyModels.Import
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">إضافة كمية</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            @using (Ajax.BeginForm(new AjaxOptions { HttpMethod = "Post", OnSuccess = "OnSuccess", OnFailure = "OnFailer" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <input type="hidden" value="@DateTime.Now" name="Date" />
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.CustomerId, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @if (ViewBag.CustomerName != null)
+                        {
+                            <div class="col-md-10">
+                                @Html.HiddenFor(m => m.CustomerId, new { value = ViewBag.CustomerId })
+                                <input value="@ViewBag.CustomerName" type="text" readonly class="form-control" />
+                                @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger" })
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-10">
+                                @Html.DropDownList("CustomerId", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger" })
+                            </div>
+                        }
+
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.BoxTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("BoxTypeId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.BoxTypeId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Weight, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+        <!-- /.box-body -->
+                <div class="box-footer">
+                    @if (ViewBag.CustomerName != null)
+                    {
+                        @Html.ActionLink("رجوع", "Details","Customers", new { id=ViewBag.CustomerId}, new { @class = "btn btn-default" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("رجوع", "Index", null, new { @class = "btn btn-default" })
+
+                    }
+                        <button type="submit" class="btn btn-info pull-right">تم</button>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        @section scripts{
+            <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+            <script>
+                function OnSuccess(data) {
+                    Swal.fire({
+                        type: 'success',
+                        title: 'تم إضافة ' + data.Quantity + ' صندوق ' + data.BoxType + ' للعميل / ' + data.Customer,
+                        showConfirmButton: true,
+
+                    })
+                }
+                function OnFailer(err) {
+
+                    Swal.fire({
+                        type: 'danger',
+                        title: err,
+                        showConfirmButton: true,
+
+                    })
+                }
+            </script>
+        }

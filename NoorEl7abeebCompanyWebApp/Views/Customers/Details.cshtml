@@ -1,0 +1,134 @@
+﻿@model NoorEl7abeebCompanyWebApp.Models.MyModels.Customer
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@section Styles {
+    @Styles.Render("~/Content/AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css")
+    
+}
+@{
+    var imports = Model.Imports.GroupBy(i => i.BoxType.Name).Select(i => new { BoxTypeName = i.Key, Count = i.Sum(ii => ii.Quantity) });
+    var rests = Model.RestBoxeses.ToList();
+
+}
+
+<div class="row">
+    
+    <div class="col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header with-border bg-info text-center">
+                <h1 class="box-title">@Model.Name</h1>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                @*<ul class="nav nav-pills bg-success">
+                        <li role="presentation">@Html.ActionLink("إضافة كمية", "Create", "Imports", new { userId = Model.Id }, null)</li>
+                        <li role="presentation">@Html.ActionLink("إضافة صناديق", "Create", "Exports", new { userId = Model.Id }, null)</li>
+                        <li role="presentation">@Html.ActionLink("إرجاع صناديق", "Create", "Imports", new { userId = Model.Id }, null)</li>
+                        <li role="presentation">@Html.ActionLink("دفع مبلغ", "Create", "Payments", new { userId = Model.Id }, null)</li>
+                        <li role="presentation">@Html.ActionLink("المدفوعات", "Create", "Imports", new { userId = Model.Id }, null)</li>
+                        <li role="presentation">@Html.ActionLink("الصادرات", "Create", "Imports", new { userId = Model.Id }, null)</li>
+                        <li role="presentation">@Html.ActionLink("الواردات", "Create", "Imports", new { userId = Model.Id }, null)</li>
+                    </ul>*@
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text"><b>المبلغ المدفوع</b></span>
+                                <span class="info-box-number">@Model.Payments.Sum(p => p.Money)</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text"><b>المبلغ المتبقى</b></span>
+                                <span class="info-box-number">@(Model.Imports.Sum(i => i.TotalPrice) - Model.Payments.Sum(p => p.Money))</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-yellow"><i class="fa fa-files-o"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text"><b>الواردات</b></span>
+                                @foreach (var item in imports)
+                                {
+                                    <span class="info-box-text">@item.BoxTypeName : @item.Count</span>
+                                }
+
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text"><b>الصناديق الفارغة المتبقية</b></span>
+                                @foreach (var item in rests)
+                                {
+                                    <span class="info-box-text">@item.BoxType.Name : @item.Count</span>
+                                }
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#imports" data-toggle="tab">الواردات</a></li>
+                        <li><a href="#exports" data-toggle="tab">الصادرات</a></li>
+                        <li><a href="#payments" data-toggle="tab">المدفوعات</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="active tab-pane" id="imports">
+                            @Html.ActionLink("إضافة كمية", "Create", "Imports", new { customerId = Model.Id }, new { @class = "btn btn-primary" ,style="margin:20px" })
+                            @Html.Partial("_CustomerImports", Model.Imports)
+                        </div>
+                        <!-- /.tab-pane -->
+                        <div class="tab-pane" id="exports">
+                            @Html.ActionLink("أضافة صناديق فارغة", "Create", "Exports", new { customerId = Model.Id }, new { @class = "btn btn-primary", style = "margin:20px" })
+                            @Html.ActionLink("إرجاع صناديق فارغة", "ReturnEmptyBoxes", "Exports", new { customerId = Model.Id }, new { @class = "btn btn-success", style = "margin:20px" })
+                            @Html.Partial("_CustomerExports", Model.Exports)
+                        </div>
+                        <!-- /.tab-pane -->
+                        <div class="tab-pane" id="payments">
+                            @Html.ActionLink("دفع مبلغ", "Create", "Payments", new { customerId = Model.Id }, new { @class = "btn btn-primary", style = "margin:20px" })
+                            @Html.Partial("_CustomerPayments", Model.Payments)
+                        </div>
+                        <!-- /.tab-pane -->
+                    </div>
+                    <!-- /.tab-content -->
+                </div>
+                
+            </div>
+
+            <!-- /.box-body -->
+            <div class="box-footer">
+                @Html.ActionLink("رجوع", "Index", null, new { @class = "btn btn-default" })
+                @*<button type="submit" class="btn btn-info pull-right">تسجيل</button>*@
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Content/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js")
+    @Scripts.Render("~/Content/AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js")
+    @Scripts.Render("~/Scripts/plugin.js")
+}

@@ -1,0 +1,60 @@
+﻿@using System.Security.AccessControl
+@model NoorEl7abeebCompanyWebApp.Models.MyModels.Customer
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">إضافة عميل</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            @using (Ajax.BeginForm(new AjaxOptions { HttpMethod = "POST",OnSuccess = "OnSuccess", OnFailure = "OnFailer" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    @Html.ActionLink("رجوع", "Index", null, new { @class = "btn btn-default" })
+                    <button type="submit" class="btn btn-info pull-right">إضافة</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        function OnSuccess(data) {
+            Swal.fire({
+                type: 'success',
+                title: 'تم إضافةالعميل / ' + data.Name +' بنجاح',
+                showConfirmButton: true,
+
+            })
+        }
+        function OnFailer(err) {
+
+            Swal.fire({
+                type: 'danger',
+                title: err,
+                showConfirmButton: true,
+
+            })
+        }
+    </script>>
+}

@@ -1,0 +1,70 @@
+﻿@model IEnumerable<NoorEl7abeebCompanyWebApp.Models.MyModels.CustomerPaymentsReportVM>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@section Styles {
+    @Styles.Render("~/Content/AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css")
+
+}
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">حساب العملاء</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="customers" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.CustomerName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PaidForHim)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.RestPaymentsForHim)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TotalPayments)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CustomerName)
+                                    </td>
+                                    <td class="bg-success">
+                                        @Html.DisplayFor(modelItem => item.PaidForHim)
+                                    </td>
+                                    <td class="bg-danger">
+                                        @Html.DisplayFor(modelItem => item.RestPaymentsForHim)
+                                    </td>
+                                    <td class="bg-info">
+                                        @Html.DisplayFor(modelItem => item.TotalPayments)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+@section Scripts {
+    @Scripts.Render("~/Content/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js")
+    @Scripts.Render("~/Content/AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js")
+    @Scripts.Render("~/Scripts/plugin.js")
+}
